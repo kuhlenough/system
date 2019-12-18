@@ -20,7 +20,7 @@ before_install:
 
 before_script:
         - pushd $TRAVIS_BUILD_DIR/..
-        - source ../wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
+        - source wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
         - popd
         - rm project-config.jam
         - |-
