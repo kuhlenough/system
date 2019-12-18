@@ -20,7 +20,11 @@ before_install:
 
 before_script:
         - pushd $TRAVIS_BUILD_DIR/..
+        - |-
+           echo "The Path is **$PATH**"
         - source wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
+        - |-
+           echo "The Path is **$PATH**"
         - popd
         - rm project-config.jam
         - |-
