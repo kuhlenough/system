@@ -13,16 +13,15 @@ compiler: vxworks-clang
 env: TOOLSET=clang COMPILER=vxworks-clang CXXSTD=17
 
 before_install: 
-        - pushd
-        - cd $TRAVIS_BUILD_DIR/..
+        - pushd $TRAVIS_BUILD_DIR/..
         - wget https://labs.windriver.com/downloads/wrsdk-vxworks7-qemu-1.3.tar.bz2
         - tar xf wrsdk-vxworks7-qemu-1.3.tar.bz2
         - popd
 
 before_script:
-        - pushd
-        - cd $TRAVIS_BUILD_DIR/..
+        - pushd $TRAVIS_BUILD_DIR/..
         - source ../wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
+        - popd
         - rm project-config.jam
         - |-
            echo "import option  ;" >> ./project-config.jam
@@ -34,7 +33,7 @@ before_script:
            echo "feature.compose <static-only>on : <link>static ; " >> ./project-config.jam
            echo "using clang-vxworks : : $CXX : <cflags>$CFLAGS <cxxflags>$CXXFLAGS <compileflags>$CPPFLAGS <linkflags>$LDFLAGS <archiver>$AR <linker-type>vxworks <archiver>$AR <linker>$LD ;" >> ./project-config.jam
            echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config.jamaddons:
-        - popd
+
         
 apt:          
     packages: qemu-system-x86
