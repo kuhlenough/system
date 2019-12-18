@@ -19,15 +19,16 @@ before_install:
 before_script:
         - source wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
         - rm project-config.jam
-        - echo "import option  ;" >> ./project-config.jam
-        - echo "import feature ;" >> ./project-config.jam
-        - echo "import os ;     " >> ./project-config.jam
-        - echo "feature.feature cross-compile : vxworks : optional composite propagated ; " >> ./project-config.jam
-        - echo "feature.compose <cross-compile>vxworks : <threadapi>pthread <binary-format>elf <abi>sysv <threading>multi <target-os>vxworks ; " >> ./project-config.jam
-        - echo "feature.feature static-only : on : optional composite propagated ; " >> ./project-config.jam
-        - echo "feature.compose <static-only>on : <link>static ; " >> ./project-config.jam
-        - echo "using clang-vxworks : : $CXX : <cflags>$CFLAGS <cxxflags>$CXXFLAGS <compileflags>$CPPFLAGS <linkflags>$LDFLAGS <archiver>$AR <linker-type>vxworks <archiver>$AR <linker>$LD ;" >> ./project-config.jam
-        - echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config.jamaddons:
+        - |-
+           echo "import option  ;" >> ./project-config.jam
+           echo "import feature ;" >> ./project-config.jam
+           echo "import os ;     " >> ./project-config.jam
+           echo "feature.feature cross-compile : vxworks : optional composite propagated ; " >> ./project-config.jam
+           echo "feature.compose <cross-compile>vxworks : <threadapi>pthread <binary-format>elf <abi>sysv <threading>multi <target-os>vxworks ; " >> ./project-config.jam
+           echo "feature.feature static-only : on : optional composite propagated ; " >> ./project-config.jam
+           echo "feature.compose <static-only>on : <link>static ; " >> ./project-config.jam
+           echo "using clang-vxworks : : $CXX : <cflags>$CFLAGS <cxxflags>$CXXFLAGS <compileflags>$CPPFLAGS <linkflags>$LDFLAGS <archiver>$AR <linker-type>vxworks <archiver>$AR <linker>$LD ;" >> ./project-config.jam
+           echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config.jamaddons:
 
 apt:          
     packages: qemu-system-x86
@@ -44,7 +45,8 @@ install:
   - ./b2 headers
 
 script:
-  - echo "using $TOOLSET : : $COMPILER ;" > ~/user-config.jam
+  - |-
+       echo "using $TOOLSET : : $COMPILER ;" > ~/user-config.jam
   - ./b2 -j3 libs/system/test toolset=$TOOLSET cxxstd=$CXXSTD variant=debug,release ${UBSAN:+cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined linkflags=-fsanitize=undefined define=UBSAN=1 debug-symbols=on} ${LINKFLAGS:+linkflags=$LINKFLAGS}
 
 notifications:
