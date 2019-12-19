@@ -35,6 +35,7 @@ before_script:
         - popd
         - 'echo CC==$CC'
         - 'echo CXX==$CXX'
+        - rm ./project-config.jam
         - |-
            echo "import option  ;" >> ./project-config.jam
            echo "import feature ;" >> ./project-config.jam
@@ -60,7 +61,8 @@ install:
   - ./b2 headers
 
 script:
-  - 'echo "using $TOOLSET : : ;" > ~/user-config.jam'
+  - |-
+    echo "using $TOOLSET : : ;" > ~/user-config.jam
   - ./b2 -j3 libs/system/test toolset=$TOOLSET cxxstd=$CXXSTD variant=debug,release ${UBSAN:+cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined linkflags=-fsanitize=undefined define=UBSAN=1 debug-symbols=on} ${LINKFLAGS:+linkflags=$LINKFLAGS}
 
 #notifications:
