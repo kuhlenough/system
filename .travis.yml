@@ -26,7 +26,7 @@ env: TOOLSET=clang-vxworks CXXSTD=17
 
 before_install: 
         - pushd $TRAVIS_BUILD_DIR/..
-        - if [ ! -d "wrsdk-vxworks7-qemu" ] then ; wget https://labs.windriver.com/downloads/wrsdk-vxworks7-qemu-1.3.tar.bz2 ; tar xf wrsdk-vxworks7-qemu-1.3.tar.bz2 ; fi
+        - if [ ! -d "wrsdk-vxworks7-qemu" ] ; then wget https://labs.windriver.com/downloads/wrsdk-vxworks7-qemu-1.3.tar.bz2 ; tar xf wrsdk-vxworks7-qemu-1.3.tar.bz2 ; fi
         - popd
 
 before_script:
