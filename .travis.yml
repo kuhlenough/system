@@ -10,6 +10,12 @@ os: linux
 arch: x86
 
 compiler: vxworks-clang 
+packages: 
+        - qemu-system-x86 
+        - g++-multilib libncurses5:i386 libc6:i386 libgcc1:i386 gcc-4.8-base:i386 
+        - libstdc++5:i386 libstdc++6:i386 libxtst6 libgtk2.0-0:i386 libxtst6:i386
+
+
 env: TOOLSET=clang COMPILER=vxworks-clang CXXSTD=17
 
 before_install: 
@@ -41,8 +47,7 @@ before_script:
            echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config.jamaddons:
 
         
-apt:          
-    packages: qemu-system-x86
+
 
 install:
   - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
