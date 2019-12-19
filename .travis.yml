@@ -31,13 +31,9 @@ before_install:
 
 before_script:
         - pushd $TRAVIS_BUILD_DIR/..
-        - 'echo "The shell is **$0**"'
-        - 'echo "The shell is **$SHELL**"'
-        - 'ps -p "$$"'
-        - 'cat /home/travis/build.sh' 
+        - pwd
         - source wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
-        - |-
-           echo "The Path is **${PATH}**"
+        - set
         - popd
         - rm project-config.jam
         - |-
@@ -49,9 +45,8 @@ before_script:
            echo "feature.feature static-only : on : optional composite propagated ; " >> ./project-config.jam
            echo "feature.compose <static-only>on : <link>static ; " >> ./project-config.jam
            echo "using clang-vxworks : : $CXX : <cflags>$CFLAGS <cxxflags>$CXXFLAGS <compileflags>$CPPFLAGS <linkflags>$LDFLAGS <archiver>$AR <linker-type>vxworks <archiver>$AR <linker>$LD ;" >> ./project-config.jam
-           echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config.jamaddons:
-
-        
+           echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config
+        - cat ./project-config.jam   
 
 
 install:
