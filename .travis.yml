@@ -32,9 +32,8 @@ before_script:
         - source wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
         - export AR=x86-wrs-vxworks-ar
         - export LD=x86-wrs-vxworks-ld
-        - popd
-        - 'echo CC==$CC'
-        - 'echo CXX==$CXX'
+        - export PKG_SRC_BUILD_DIR=`realpath $TRAVIS_BUILD_DIR/../boost-root`
+        - export LAYER_SRC_PATH=boost-root
         - rm ./project-config.jam
         - |-
            echo "import option  ;" >> ./project-config.jam
