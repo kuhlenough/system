@@ -61,9 +61,7 @@ install:
   - ./b2 headers
 
 script:
-  - |-
-    echo "using $TOOLSET : : x86-wrs-vxworks-cxx ;" > ~/user-config.jam.ignor
-  - ./b2 -j3 libs/system/test toolset=$TOOLSET cxxstd=$CXXSTD variant=debug,release ${UBSAN:+cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined linkflags=-fsanitize=undefined define=UBSAN=1 debug-symbols=on} ${LINKFLAGS:+linkflags=$LINKFLAGS}
+  - ./b2 -j3 libs/system/test toolset=$TOOLSET cxxstd=$CXXSTD variant=debug,release testing.execute=off
 
 #notifications:
 #  email:
