@@ -45,7 +45,7 @@ before_script:
            echo "feature.feature static-only : on : optional composite propagated ; " >> ./project-config.jam
            echo "feature.compose <static-only>on : <link>static ; " >> ./project-config.jam
            echo "using clang-vxworks : : x86-wrs-vxworks-cxx : <archiver>x86-wrs-vxworks-ar <linker-type>vxworks <linker>x86-wrs-vxworks-ld ;" >> ./project-config.jam
-           echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config
+           echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config.jam
         - cat ./project-config.jam   
 
 
@@ -62,7 +62,7 @@ install:
 
 script:
   - |-
-    echo "using $TOOLSET : : x86-wrs-vxworks-cxx ;" > ~/user-config.jam
+    echo "using $TOOLSET : : x86-wrs-vxworks-cxx ;" > ~/user-config.jam.ignor
   - ./b2 -j3 libs/system/test toolset=$TOOLSET cxxstd=$CXXSTD variant=debug,release ${UBSAN:+cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined linkflags=-fsanitize=undefined define=UBSAN=1 debug-symbols=on} ${LINKFLAGS:+linkflags=$LINKFLAGS}
 
 #notifications:
