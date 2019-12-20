@@ -47,7 +47,9 @@ before_script:
            echo "feature.compose <static-only>on : <link>static ; " >> ./project-config.jam
            echo "using clang-vxworks : : x86-wrs-vxworks-cxx : <archiver>x86-wrs-vxworks-ar <linker-type>vxworks <linker>x86-wrs-vxworks-ld ;" >> ./project-config.jam
            echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config.jam
-        - cat ./project-config.jam   
+        - cat ./project-config.jam 
+        - mkfifo /tmp/guest.in /tmp/guest.out
+        
 
 
 install:
