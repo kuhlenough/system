@@ -36,6 +36,7 @@ before_script:
         - export LAYER_SRC_PATH=boost-root
         - export BOOST_ARGS="  --prefix=$WIND_SDK_INCLUDE/usr --libdir=$WIND_SDK_INCLUDE/usr/lib/common --includedir=$WIND_SDK_INCLUDE/usr/h/public "
         - export SDK_KERNEL=$PWD/wrsdk-vxworks7-qemu/bsps/itl_generic_2_0_0_2/boot/vxWorks
+        - export SDK_BOOTLINE="bootline:fs(0,0)host:vxWorks h=10.0.2.2 e=10.0.2.15 u=target pw=boot o=gei0"
         - popd 
         - rm ./project-config.jam
         - |-
@@ -50,8 +51,7 @@ before_script:
            echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config.jam
         - cat ./project-config.jam 
         - mkfifo /tmp/guest.in /tmp/guest.out
-        - qemu-system-x86_64 -serial pipe:/tmp/guest -kernel $SDK_KERNEL -nic user,model=e1000,net=10.10.10.1/24,dhcpstart=10.10.10.5,id=myhostnet,hostfwd=tcp:127.0.0.1:1534-:1534
-        
+        - qemu-system-x86_64 -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -serial stdio -monitor none -append "$SDK_BOOTLINE"
         
 install:
   - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
