@@ -34,6 +34,7 @@ before_script:
         - export LD=x86-wrs-vxworks-ld
         - export PKG_SRC_BUILD_DIR=`realpath $TRAVIS_BUILD_DIR/../boost-root`
         - export LAYER_SRC_PATH=boost-root
+        - popd 
         - rm ./project-config.jam
         - |-
            echo "import option  ;" >> ./project-config.jam
