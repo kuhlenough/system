@@ -34,7 +34,7 @@ before_script:
         - export LD=x86-wrs-vxworks-ld
         - export PKG_SRC_BUILD_DIR=`realpath $TRAVIS_BUILD_DIR/../boost-root`
         - export LAYER_SRC_PATH=boost-root
-        - export BOOST_ARGS ="  --prefix=$WIND_SDK_INCLUDE/usr --libdir=$WIND_SDK_INCLUDE/usr/lib/common --includedir=$WIND_SDK_INCLUDE/usr/h/public "
+        - 'export BOOST_ARGS ="  --prefix=$WIND_SDK_INCLUDE/usr --libdir=$WIND_SDK_INCLUDE/usr/lib/common --includedir=$WIND_SDK_INCLUDE/usr/h/public "'
         - popd 
         - rm ./project-config.jam
         - |-
