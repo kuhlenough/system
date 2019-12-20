@@ -52,7 +52,7 @@ before_script:
         - cat ./project-config.jam 
         - mkfifo /tmp/guest.in /tmp/guest.out
         - |
-           qemu-system-x86_64 -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -serial stdio -monitor none -append "$SDK_BOOTLINE" &
+           qemu-system-x86_64 -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none -append "$SDK_BOOTLINE" &
            export QEMU_PID=$!
         
         
