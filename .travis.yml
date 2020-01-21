@@ -33,6 +33,7 @@ before_script:
         - export SDK_KERNEL=$PWD/wrsdk-vxworks7-qemu/bsps/itl_generic_2_0_0_2/boot/vxWorks
         - export SDK_BOOTLINE="bootline:fs(0,0)host:vxWorks h=10.0.2.2 e=10.0.2.15 u=target pw=boot o=gei0"
         - popd 
+        - exportfs *:$PWD
         - export PKG_SRC_BUILD_DIR=$PWD
         - export LAYER_SRC_PATH=$PKG_SRC_BUILD_DIR
         - cp $TRAVIS_BUILD_DIR/project-config.jam ./project-config.jam
