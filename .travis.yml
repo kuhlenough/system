@@ -39,9 +39,9 @@ before_script:
         - cp $TRAVIS_BUILD_DIR/clang-vxworks.jam  ./tools/build/src/tools/clang-vxworks.jam
         - mkfifo /tmp/guest.in /tmp/guest.out
         - |
-           qemu-system-x86_64 -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none -append "$SDK_BOOTLINE" &
+           qemu-system-x86_64 -m 512M -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none -append "$SDK_BOOTLINE" &
            export QEMU_PID=$!
-        - timeout 20 cat /tmp/guest.out
+        - timeout --preserve-status 40 cat /tmp/guest.out
 
 
 install:
