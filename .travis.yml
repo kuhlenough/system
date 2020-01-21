@@ -44,7 +44,7 @@ before_script:
            export QEMU_PID=$!
         - timeout 15 cat /tmp/guest.out || true
         - echo "cmd\n" >/tmp/guest.in
-        - while IFS= read -r line ; do ; echo "$line" ; done < "/tmp/guest.out"
+        - while IFS= read -r line ; do echo "$line" ; done < "/tmp/guest.out"
 
 
 
