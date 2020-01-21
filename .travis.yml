@@ -32,9 +32,9 @@ before_script:
         - source wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
         - export SDK_KERNEL=$PWD/wrsdk-vxworks7-qemu/bsps/itl_generic_2_0_0_2/boot/vxWorks
         - export QEMU_GATEWAY="90.1.0.2"
-        - export QEMU_DHCP="90.1.0.2"
+        - export QEMU_DHCP="90.1.0.4"
         - export QEMU_GUEST="90.1.0.40"
-        - export SDK_BOOTLINE="bootline:gei(0,0)host:vxWorks g=$QEMU_GATEWAY e=$QEMU_GUEST:fffff00"
+        - export SDK_BOOTLINE="bootline:gei(0,0)host:vxWorks g=$QEMU_GATEWAY e=$QEMU_GUEST:fffff000"
         - export SDK_NETDEV="user,net=$QEMU_GATEWAY/24,dhcpstart=$QEMU_DHCP,id=net0,hostfwd=tcp:127.0.0.1:1534-:1534"
         - export SDK_DEV="e1000,netdev=net0"
         - popd 
