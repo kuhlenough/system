@@ -41,7 +41,7 @@ before_script:
         - cp $TRAVIS_BUILD_DIR/clang-vxworks.jam  ./tools/build/src/tools/clang-vxworks.jam
         - mkfifo /tmp/guest.in /tmp/guest.out
         - |
-           qemu-system-x86_64 -m 512M -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none -nic "$SDK_NIC"  &
+           qemu-system-x86_64 -m 512M -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none -nic $SDK_NIC &
            export QEMU_PID=$!
         - timeout 15 cat /tmp/guest.out || true
         - echo "cmd" >/tmp/guest.in
