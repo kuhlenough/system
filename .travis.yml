@@ -6,381 +6,56 @@ language: cpp
 
 sudo: false
 
-dist: trusty
+os: linux
+compiler: clang 
+addons:
+    apt:
+        packages: 
+            - qemu-system-x86 
+            - g++-multilib libncurses5:i386 libc6:i386 libgcc1:i386 gcc-4.8-base:i386 
+            - libstdc++5:i386 libstdc++6:i386 libxtst6 libgtk2.0-0:i386 libxtst6:i386
 
-branches:
-  only:
-    - master
-    - develop
-    - /feature\/.*/
+cache:
+    directories:
+     - /home/travis/build/sdk
 
-env:
-  matrix:
-    - BOGUS_JOB=true
 
-matrix:
+env: TOOLSET=clang-vxworks CXXSTD=17  
 
-  exclude:
-    - env: BOGUS_JOB=true
+before_install: 
+        - pushd /home/travis/build/sdk
+        - if [ ! -d "wrsdk-vxworks7-qemu" ] ; then wget https://labs.windriver.com/downloads/wrsdk-vxworks7-qemu-1.3.tar.bz2 ; tar xf wrsdk-vxworks7-qemu-1.3.tar.bz2 ; fi
+        - popd
 
-  include:
-    - os: linux
-      compiler: g++
-      env: TOOLSET=gcc COMPILER=g++ CXXSTD=03,11
-
-    - os: linux
-      compiler: g++-4.4
-      env: TOOLSET=gcc COMPILER=g++-4.4 CXXSTD=98,0x
-      addons:
-        apt:
-          packages:
-            - g++-4.4
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-4.6
-      env: TOOLSET=gcc COMPILER=g++-4.6 CXXSTD=03,0x
-      addons:
-        apt:
-          packages:
-            - g++-4.6
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-4.7
-      env: TOOLSET=gcc COMPILER=g++-4.7 CXXSTD=03,11
-      addons:
-        apt:
-          packages:
-            - g++-4.7
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-4.8
-      env: TOOLSET=gcc COMPILER=g++-4.8 CXXSTD=03,11
-      addons:
-        apt:
-          packages:
-            - g++-4.8
-          sources:
-            - ubuntu-toolchain-r-test
-    - os: linux
-      compiler: g++-4.9
-      env: TOOLSET=gcc COMPILER=g++-4.9 CXXSTD=03,11
-      addons:
-        apt:
-          packages:
-            - g++-4.9
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-5
-      env: TOOLSET=gcc COMPILER=g++-5 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - g++-5
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-6
-      env: TOOLSET=gcc COMPILER=g++-6 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - g++-6
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-7
-      env: TOOLSET=gcc COMPILER=g++-7 CXXSTD=03,11,14,17
-      addons:
-        apt:
-          packages:
-            - g++-7
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-8
-      env: TOOLSET=gcc COMPILER=g++-8 CXXSTD=03,11,14,17,2a
-      addons:
-        apt:
-          packages:
-            - g++-8
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-9
-      env: TOOLSET=gcc COMPILER=g++-9 CXXSTD=03,11,14,17,2a
-      addons:
-        apt:
-          packages:
-            - g++-9
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: g++-8
-      env: UBSAN=1 TOOLSET=gcc COMPILER=g++-8 CXXSTD=03,11,14,17 UBSAN_OPTIONS=print_stacktrace=1 LINKFLAGS=-fuse-ld=gold
-      addons:
-        apt:
-          packages:
-            - g++-8
-          sources:
-            - ubuntu-toolchain-r-test
-
-    - os: linux
-      compiler: clang++
-      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11
-
-    - os: linux
-      compiler: /usr/bin/clang++
-      env: TOOLSET=clang COMPILER=/usr/bin/clang++ CXXSTD=03,11
-      addons:
-        apt:
-          packages:
-            - clang-3.3
-
-    - os: linux
-      compiler: /usr/bin/clang++
-      env: TOOLSET=clang COMPILER=/usr/bin/clang++ CXXSTD=03,11
-      addons:
-        apt:
-          packages:
-            - clang-3.4
-
-    - os: linux
-      compiler: clang++-3.5
-      env: TOOLSET=clang COMPILER=clang++-3.5 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-3.5
-            - libstdc++-4.9-dev
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.5
-
-    - os: linux
-      compiler: clang++-3.6
-      env: TOOLSET=clang COMPILER=clang++-3.6 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-3.6
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-
-    - os: linux
-      compiler: clang++-3.6
-      env: TOOLSET=clang COMPILER=clang++-3.6 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-3.6
-            - libstdc++-4.9-dev
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-
-    - os: linux
-      compiler: clang++-3.7
-      env: TOOLSET=clang COMPILER=clang++-3.7 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-3.7
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-
-    - os: linux
-      compiler: clang++-3.7
-      env: TOOLSET=clang COMPILER=clang++-3.7 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-3.7
-            - libstdc++-4.9-dev
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-
-    - os: linux
-      compiler: clang++-3.8
-      env: TOOLSET=clang COMPILER=clang++-3.8 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-3.8
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
-
-    - os: linux
-      compiler: clang++-3.8
-      env: TOOLSET=clang COMPILER=clang++-3.8 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-3.8
-            - libstdc++-4.9-dev
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
-
-    - os: linux
-      compiler: clang++-3.9
-      env: TOOLSET=clang COMPILER=clang++-3.9 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-3.9
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.9
-
-    - os: linux
-      compiler: clang++-3.9
-      env: TOOLSET=clang COMPILER=clang++-3.9 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-3.9
-            - libstdc++-4.9-dev
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.9
-
-    - os: linux
-      compiler: clang++-4.0
-      env: TOOLSET=clang COMPILER=clang++-4.0 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-4.0
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-4.0
-
-    - os: linux
-      compiler: clang++-4.0
-      env: TOOLSET=clang COMPILER=clang++-4.0 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-4.0
-            - libstdc++-4.9-dev
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-4.0
-
-    - os: linux
-      compiler: clang++-5.0
-      env: TOOLSET=clang COMPILER=clang++-5.0 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-5.0
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
-
-    - os: linux
-      compiler: clang++-5.0
-      env: TOOLSET=clang COMPILER=clang++-5.0 CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - clang-5.0
-            - libstdc++-4.9-dev
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
-
-    - os: linux
-      compiler: clang++-6.0
-      env: TOOLSET=clang COMPILER=clang++-6.0 CXXSTD=03,11,14,17
-      addons:
-        apt:
-          packages:
-            - clang-6.0
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-6.0
-
-    - os: linux
-      compiler: clang++-7
-      env: TOOLSET=clang COMPILER=clang++-7 CXXSTD=03,11,14,17,2a
-      addons:
-        apt:
-          packages:
-            - clang-7
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-7
-
-    - os: linux
-      compiler: clang++-8
-      env: TOOLSET=clang COMPILER=clang++-8 CXXSTD=03,11,14,17,2a
-      addons:
-        apt:
-          packages:
-            - clang-8
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-8
-
-    - os: linux
-      compiler: clang++-6.0
-      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-6.0 CXXSTD=03,11,14,1z UBSAN_OPTIONS=print_stacktrace=1
-      addons:
-        apt:
-          packages:
-            - clang-6.0
-            - libstdc++-5-dev
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-6.0
-
-    - os: linux
-      compiler: clang++-libc++
-      env: TOOLSET=clang COMPILER=clang++-libc++ CXXSTD=03,11,14,1z
-      addons:
-        apt:
-          packages:
-            - libc++-dev
-
-    - os: linux
-      compiler: clang++-libc++
-      env: UBSAN=1 TOOLSET=clang COMPILER=clang++-libc++ CXXSTD=03,11,14,1z UBSAN_OPTIONS=print_stacktrace=1
-      addons:
-        apt:
-          packages:
-            - libc++-dev
-
-    - os: osx
-      compiler: clang++
-      env: TOOLSET=clang COMPILER=clang++ CXXSTD=03,11,14,1z
-
-    - os: linux
-      compiler: g++
-      env: CMAKE_SUBDIR_TEST=1
-      script:
-      - cd libs/system/test/cmake_subdir_test && mkdir __build__ && cd __build__
-      - cmake ..
-      - cmake --build .
-      - cmake --build . --target check
-
+before_script:
+        - pushd /home/travis/build/sdk
+        - source wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
+        - export AR=x86-wrs-vxworks-ar
+        - export LD=x86-wrs-vxworks-ld
+        - export BOOST_ARGS="  --prefix=$WIND_SDK_INCLUDE/usr --libdir=$WIND_SDK_INCLUDE/usr/lib/common --includedir=$WIND_SDK_INCLUDE/usr/h/public "
+        - export SDK_KERNEL=$PWD/wrsdk-vxworks7-qemu/bsps/itl_generic_2_0_0_2/boot/vxWorks
+        - export SDK_BOOTLINE="bootline:fs(0,0)host:vxWorks h=10.0.2.2 e=10.0.2.15 u=target pw=boot o=gei0"
+        - popd 
+        - export PKG_SRC_BUILD_DIR=$PWD
+        - export LAYER_SRC_PATH=$PKG_SRC_BUILD_DIR
+        - rm ./project-config.jam
+        - |-
+           echo "import option  ;" >> ./project-config.jam
+           echo "import feature ;" >> ./project-config.jam
+           echo "import os ;     " >> ./project-config.jam
+           echo "feature.feature cross-compile : vxworks : optional composite propagated ; " >> ./project-config.jam
+           echo "feature.compose <cross-compile>vxworks : <threadapi>pthread <binary-format>elf <abi>sysv <threading>multi <target-os>vxworks ; " >> ./project-config.jam
+           echo "feature.feature static-only : on : optional composite propagated ; " >> ./project-config.jam
+           echo "feature.compose <static-only>on : <link>static ; " >> ./project-config.jam
+           echo "using clang-vxworks : : x86-wrs-vxworks-cxx : <archiver>x86-wrs-vxworks-ar <linker-type>vxworks <linker>x86-wrs-vxworks-ld ;" >> ./project-config.jam
+           echo "project : requirements  <static-only>on,<link>shared:<build>no <cross-compile>vxworks <exception-handling>off:<build>no ; " >> ./project-config.jam
+        - cat ./project-config.jam 
+        - mkfifo /tmp/guest.in /tmp/guest.out
+        - |
+           qemu-system-x86_64 -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none -append "$SDK_BOOTLINE" &
+           export QEMU_PID=$!
+        
+        
 install:
   - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
   - cd ..
@@ -393,10 +68,8 @@ install:
   - ./b2 headers
 
 script:
-  - |-
-    echo "using $TOOLSET : : $COMPILER ;" > ~/user-config.jam
-  - ./b2 -j3 libs/system/test toolset=$TOOLSET cxxstd=$CXXSTD variant=debug,release ${UBSAN:+cxxflags=-fsanitize=undefined cxxflags=-fno-sanitize-recover=undefined linkflags=-fsanitize=undefined define=UBSAN=1 debug-symbols=on} ${LINKFLAGS:+linkflags=$LINKFLAGS}
+  - ./b2 -j3 libs/system/test toolset=$TOOLSET variant=debug,release $BOOST_ARGS
 
-notifications:
-  email:
-    on_success: always
+#notifications:
+#  email:
+#    on_success: always
