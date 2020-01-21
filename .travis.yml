@@ -32,7 +32,7 @@ before_script:
         - source wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
         - export SDK_KERNEL=$PWD/wrsdk-vxworks7-qemu/bsps/itl_generic_2_0_0_2/boot/vxWorks
         - export SDK_BOOTLINE="bootline:gei(0,0)host:vxWorks "
-        - export SDK_NIC="user,model=e1000,net=10.10.10.1/24,dhcpstart=10.10.10.5,id=myhostnet,hostfwd=tcp:127.0.0.1:1534-:1534"
+        - export SDK_NIC="-nic user,model=e1000,net=10.10.10.1/24,dhcpstart=10.10.10.5,id=myhostnet,hostfwd=tcp:127.0.0.1:1534-:1534"
         - popd 
         - sudo exportfs *:$PWD
         - export PKG_SRC_BUILD_DIR=$PWD
@@ -41,7 +41,7 @@ before_script:
         - cp $TRAVIS_BUILD_DIR/clang-vxworks.jam  ./tools/build/src/tools/clang-vxworks.jam
         - mkfifo /tmp/guest.in /tmp/guest.out
         - |
-           qemu-system-x86_64 -m 512M -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none -nic $SDK_NIC &
+           qemu-system-x86_64 -m 512M -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none $SDK_NIC &
            export QEMU_PID=$!
         - timeout 15 cat /tmp/guest.out || true
         - echo "cmd" >/tmp/guest.in
