@@ -41,7 +41,7 @@ before_script:
         - |
            qemu-system-x86_64 -m 512M -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none -append "$SDK_BOOTLINE" &
            export QEMU_PID=$!
-        - timeout --preserve-status 40 cat /tmp/guest.out
+        - timeout 20 tail --lines=50 /tmp/guest.out
 
 
 install:
