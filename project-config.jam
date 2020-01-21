@@ -1,0 +1,44 @@
+# Boost.Build Configuration
+# For VxWorks SDK
+
+import option ;
+import feature ;
+import os ;
+
+SDK_TOOLKIT = [ os.environ WIND_SDK_TOOLKIT ] ;
+SDK_LIB = [ os.environ WIND_SDK_LIB ] ;
+SDK_INCLUDE = [ os.environ WIND_SDK_INCLUDE ] ;
+CXX = [ os.environ CXX ] ;
+AR = [ os.environ AR ] ;
+#LD = [ os.environ LD ] ;
+LD = $(CXX) ;
+
+using clang-vxworks : : $(CXX) : <linker-type>vxworks
+                                 <linker>$(LD) 
+                                 <archiver>$(AR) ;
+
+# Python configuration
+import python ;
+if ! [ python.configured ]
+{
+    using python : 2.7 : "/usr" ;
+}
+
+# List of --with-<library> and --without-<library>
+# options. Build a select set of libraries known to work unpatched 
+libraries = --without-log --without-python  --without-graph_parallel --without-mpi ;
+
+# These settings are equivalent to corresponding command-line
+# options.
+option.set prefix : $(SDK_TOOLKIT) ;
+option.set exec-prefix : $(SDK_TOOLKIT) ;
+option.set libdir : $(SDK_LIB) ;
+option.set includedir : $(SDK_INCLUDE)/usr/h/public  ;
+
+project : requirements <threadapi>pthread 
+                       <threading>multi 
+                       <target-os>vxworks
+                       <toolset>clang-vxworks  ;
+
+# Stop on first error
+option.set keep-going : false ;
