@@ -43,7 +43,7 @@ before_script:
         # set up VxWorks for mounting Boost build directory over NFS 
         - export MY_UID=`id -u`
         - export MY_GID=`id -g`
-        - export MY_HOST=`hostname`
+        - export MY_HOST=`hostname -s`
         - sudo exportfs *:$PWD
         - export PKG_SRC_BUILD_DIR=$PWD
         - export LAYER_SRC_PATH=$PKG_SRC_BUILD_DIR
@@ -61,12 +61,14 @@ before_script:
         # set up VxWorks as NFS client 
         - echo " " >/tmp/guest.in
         - echo "hostAdd \"$MY_HOST\", \"$QEMU_GATEWAY\" ">/tmp/guest.in
+        - timeout 1 cat /tmp/guest.out || true
         - echo "nfsAuthUnixSet \"$MY_HOST\", $MY_UID, $MY_GID, 0">/tmp/guest.in
+        - timeout 1 cat /tmp/guest.out || true
         - echo "nfsMountAll \"$MY_HOST\", 0, 0">/tmp/guest.in
+        - timeout 2 cat /tmp/guest.out || true
         # switch to 'cmd' shell for launcher 
         - echo "cmd" >/tmp/guest.in
-        - echo " " >/tmp/guest.in
-        - timeout 2 cat /tmp/guest.out || true
+        - timeout 1 cat /tmp/guest.out || true
 
 
 
