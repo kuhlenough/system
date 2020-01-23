@@ -29,27 +29,41 @@ before_install:
 
 before_script:
         - pushd /home/travis/build/sdk
+        # source the enviorment for the VxWorks SDK
         - source wrsdk-vxworks7-qemu/toolkit/wind_sdk_env.linux
         - export SDK_KERNEL=$PWD/wrsdk-vxworks7-qemu/bsps/itl_generic_2_0_0_2/boot/vxWorks
+        - popd 
+        # set up parameters for QEMU
         - export QEMU_GATEWAY="90.1.0.2"
         - export QEMU_DHCP="90.1.0.4"
         - export QEMU_GUEST="90.1.0.40"
         - export SDK_BOOTLINE="bootline:gei(0,0)host:vxWorks g=$QEMU_GATEWAY e=$QEMU_GUEST:fffff000"
         - export SDK_NETDEV="user,net=$QEMU_GATEWAY/24,dhcpstart=$QEMU_DHCP,id=net0,hostfwd=tcp:127.0.0.1:1534-:1534"
         - export SDK_DEV="e1000,netdev=net0"
-        - popd 
+        # set up VxWorks for mounting Boost build directory over NFS 
+        - export MY_UID=`id -u`
+        - export MY_GID=`id -g`
+        - export MY_HOST=`hostname`
         - sudo exportfs *:$PWD
         - export PKG_SRC_BUILD_DIR=$PWD
         - export LAYER_SRC_PATH=$PKG_SRC_BUILD_DIR
+        # copy extra files into test diretory
         - cp $TRAVIS_BUILD_DIR/project-config.jam ./project-config.jam
         - cp $TRAVIS_BUILD_DIR/clang-vxworks.jam  ./tools/build/src/tools/clang-vxworks.jam
+        # make a FIFO for to comunicate with VxWorks running in QEMU
         - mkfifo /tmp/guest.in /tmp/guest.out
+        # Boot VxWorks in QEMU
         - |
            qemu-system-x86_64 -m 512M -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none \
                               -device $SDK_DEV -netdev $SDK_NETDEV -append "$SDK_BOOTLINE" &
            export QEMU_PID=$!
         - timeout 20 cat /tmp/guest.out || true
+        # set up VxWorks as NFS client 
         - echo " " >/tmp/guest.in
+        - echo "hostAdd \"$MY_HOST\", \"$QEMU_GATEWAY\" ">/tmp/guest.in
+        - echo "nfsAuthUnixSet \"$MY_HOST\", $MY_UID, $MY_GID, 0">/tmp/guest.in
+        - echo "nfsMountAll \"$MY_HOST\", 0, 0">/tmp/guest.in
+        # switch to 'cmd' shell for launcher 
         - echo "cmd" >/tmp/guest.in
         - echo " " >/tmp/guest.in
         - timeout 2 cat /tmp/guest.out || true
