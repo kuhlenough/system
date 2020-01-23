@@ -26,7 +26,7 @@ if ! [ python.configured ]
 
 # List of --with-<library> and --without-<library>
 # options. Build a select set of libraries known to work unpatched 
-libraries = --without-log --without-python  --without-graph_parallel --without-mpi ;
+#libraries = --without-log --without-python  --without-graph_parallel --without-mpi ;
 
 # These settings are equivalent to corresponding command-line
 # options.
