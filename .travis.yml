@@ -60,16 +60,11 @@ before_script:
         - timeout 20 cat /tmp/guest.out || true
         # set up VxWorks as NFS client 
         - function vx_cmd() { echo $2 >/tmp/guest.in; timeout $1 cat /tmp/guest.out || true; }
-        - vx_cmd  2 "i"
-        - echo "hostAdd \"$MY_HOST\", \"$QEMU_GATEWAY\" ">/tmp/guest.in
-        - timeout 1 cat /tmp/guest.out || true
-        - echo "nfsAuthUnixSet \"$MY_HOST\", $MY_UID, $MY_GID, 0">/tmp/guest.in
-        - timeout 1 cat /tmp/guest.out || true
-        - echo "nfsMountAll \"$MY_HOST\", 0, 0">/tmp/guest.in
-        - timeout 2 cat /tmp/guest.out || true
-        # switch to 'cmd' shell for launcher 
-        - echo "cmd" >/tmp/guest.in
-        - timeout 1 cat /tmp/guest.out || true
+        - vx_cmd 2 "i"
+        - vx_cmd 1 "hostAdd \"$MY_HOST\", \"$QEMU_GATEWAY\" "
+        - vx_cmd 1 "nfsAuthUnixSet \"$MY_HOST\", $MY_UID, $MY_GID, 0"
+        - vx_cmd 2 "nfsMountAll \"$MY_HOST\", 0, 0"
+        - vx_cmd 1 "cmd"
 
 
 
