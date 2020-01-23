@@ -48,9 +48,11 @@ before_script:
            qemu-system-x86_64 -m 512M -serial pipe:/tmp/guest -kernel $SDK_KERNEL -display none -monitor none \
                               -device $SDK_DEV -netdev $SDK_NETDEV -append "$SDK_BOOTLINE" &
            export QEMU_PID=$!
-        - timeout 15 cat /tmp/guest.out || true
+        - timeout 20 cat /tmp/guest.out || true
+        - echo " " >/tmp/guest.in
         - echo "cmd" >/tmp/guest.in
-        - timeout 1 cat /tmp/guest.out || true
+        - echo " " >/tmp/guest.in
+        - timeout 2 cat /tmp/guest.out || true
 
 
 
